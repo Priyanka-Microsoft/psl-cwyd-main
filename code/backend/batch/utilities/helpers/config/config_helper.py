@@ -247,6 +247,7 @@ class ConfigHelper:
                     Template(f.read()).substitute(
                         ORCHESTRATION_STRATEGY=env_helper.ORCHESTRATION_STRATEGY,
                         CHAT_HISTORY_ENABLED=env_helper.CHAT_HISTORY_ENABLED,
+                        CONVERSATION_FLOW=env_helper.CONVERSATION_FLOW,
                     )
                 )
                 if env_helper.USE_ADVANCED_IMAGE_PROCESSING:
@@ -303,6 +304,7 @@ class ConfigHelper:
             if document_processor["document_type"] not in file_types
         ]
         ConfigHelper._default_config["document_processors"] = document_processors
+
 
     @staticmethod
     def delete_config():
