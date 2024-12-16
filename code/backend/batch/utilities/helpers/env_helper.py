@@ -264,6 +264,8 @@ class EnvHelper:
 
         self.PROMPT_FLOW_DEPLOYMENT_NAME = os.getenv("PROMPT_FLOW_DEPLOYMENT_NAME", "")
 
+        self.CONVERSATION_FLOW = os.getenv("CONVERSATION_FLOW", "custom")
+
         # Chat History CosmosDB Integration Settings
         azure_cosmosdb_info = self.get_info_from_env("AZURE_COSMOSDB_INFO", "")
         self.AZURE_COSMOSDB_DATABASE = azure_cosmosdb_info.get("databaseName", "")
