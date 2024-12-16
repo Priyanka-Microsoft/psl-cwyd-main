@@ -52,6 +52,9 @@ class Config:
         self.enable_chat_history = config.get(
             "enable_chat_history", self.env_helper.CHAT_HISTORY_ENABLED
         )
+        self.conversational_flow = config.get(
+            "conversational_flow", self.env_helper.CONVERSATION_FLOW
+        )
 
     def get_available_document_types(self) -> list[str]:
         document_types = {
@@ -93,6 +96,7 @@ class Config:
 # TODO: Change to AnsweringChain or something, Prompts is not a good name
 class Prompts:
     def __init__(self, prompts: dict):
+        print("prompts:",prompts["conversational_flow"])
         self.condense_question_prompt = prompts["condense_question_prompt"]
         self.answering_system_prompt = prompts["answering_system_prompt"]
         self.answering_user_prompt = prompts["answering_user_prompt"]
@@ -192,6 +196,7 @@ class ConfigHelper:
             blob_client = AzureBlobStorageClient(container_name=CONFIG_CONTAINER_NAME)
 
             if blob_client.file_exists(CONFIG_FILE_NAME):
+                print("Hi, I am here")
                 default_config = config
                 config_file = blob_client.download_file(CONFIG_FILE_NAME)
                 config = json.loads(config_file)
@@ -238,9 +243,7 @@ class ConfigHelper:
     def get_default_config():
         if ConfigHelper._default_config is None:
             env_helper = EnvHelper()
-
             config_file_path = os.path.join(os.path.dirname(__file__), "default.json")
-
             with open(config_file_path, encoding="utf-8") as f:
                 logger.info("Loading default config from %s", config_file_path)
                 ConfigHelper._default_config = json.loads(
@@ -250,9 +253,10 @@ class ConfigHelper:
                         CONVERSATION_FLOW=env_helper.CONVERSATION_FLOW,
                     )
                 )
-                if env_helper.USE_ADVANCED_IMAGE_PROCESSING:
-                    ConfigHelper._append_advanced_image_processors()
-
+                # if env_helper.USE_ADVANCED_IMAGE_PROCESSING:
+                #     ConfigHelper._append_advanced_image_processors()
+        # print("=======")
+        # print(ConfigHelper._default_config)
         return ConfigHelper._default_config
 
     @staticmethod
